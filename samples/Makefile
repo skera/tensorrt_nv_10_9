@@ -47,7 +47,6 @@ ifeq ($(SAFE_PDK), 1)
   samples := dlaSafetyRuntime
 else
   samples := \
-          trtexec \
           sampleDemo
   # TRTS-9861 TRTS-10013 add trtSafeExec and sampleSafeMNIST respectively
   ifeq ($(SAFETY_SAMPLE_BUILD), 1)
