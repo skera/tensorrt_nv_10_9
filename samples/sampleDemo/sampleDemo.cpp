@@ -201,9 +201,9 @@ int main(int argc, char** argv)
                     CHECK(cudaMemcpy(mInput.deviceBuffer.data(), vec.data(), vec.size() * sizeof(float), cudaMemcpyHostToDevice));
                 }
                 preprocessorBindings[i] = mInput.deviceBuffer.data();
-                std::vector<float> vec1(args.batch * args.dim, 0);
-                CHECK(cudaMemcpy(vec1.data(), preprocessorBindings[i], vec1.size() * sizeof(float), cudaMemcpyDeviceToHost));
-                std::cout << "output:" << vec1 << std::endl;
+                // std::vector<float> vec1(args.batch * args.dim, 0);
+                // CHECK(cudaMemcpy(vec1.data(), preprocessorBindings[i], vec1.size() * sizeof(float), cudaMemcpyDeviceToHost));
+                // std::cout << "output:" << vec1 << std::endl;
             }
         }
 
