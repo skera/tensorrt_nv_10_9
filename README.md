@@ -12,5 +12,5 @@ wget https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/10
 5. cp -rf /xxx/xxx/TensorRT-10.9.0.34/samples/utils ./
 6. make TensorRT_INSTALL_DIR=/xxx/xxx/TensorRT-10.9.0.34
 # 执行
-cd TensorRT-10.9.0.34 <br/>
-env LD_LIBRARY_PATH=./lib: ./bin/sample_demo -d ./model/ --modelFileName model.onnx --dim=1000 --batch=150 <br/>
+cd tensorrt_nv_10_9 <br/>
+env LD_LIBRARY_PATH=/xxx/xxx/TensorRT-10.9.0.34/lib:$LD_LIBRARY_PATH ./bin/sample_demo -d /model/ --modelFileName model.onnx --dim=30000 --batch=10 <br/>
