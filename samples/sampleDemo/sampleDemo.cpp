@@ -191,16 +191,20 @@ int main(int argc, char** argv)
         // Inference Before
         std::vector<void*> preprocessorBindings(inputSize + 1, nullptr);
         {
+            std::shared_ptr<samplesCommon::ManagedBuffer> mInput;
+            std::vector<std::shared_ptr<samplesCommon::ManagedBuffer>> mInputs(inputSize);
+            std::vector<float> vec(batch_size * dim, 0.5);
             for (int i=0; i<inputSize; ++i) {
                 std::cout << "inputSize: " << inputSize << ", batch_size: " << batch_size << ", dim: " << dim << std::endl;
-                samplesCommon::ManagedBuffer mInput{};
-                mInput.deviceBuffer.resize(inputDims);
-                std::vector<float> vec(batch_size * dim, 0.5);
+                // samplesCommon::ManagedBuffer mInput{};
+                mInput = std::make_shared<samplesCommon::ManagedBuffer>();
+                mInput->deviceBuffer.resize(inputDims);
+                mInputs[i] = mInput;
                 {
                     PerfGuard guard("H2D", 1);
-                    CHECK(cudaMemcpy(mInput.deviceBuffer.data(), vec.data(), vec.size() * sizeof(float), cudaMemcpyHostToDevice));
+                    CHECK(cudaMemcpy(mInput->deviceBuffer.data(), vec.data(), vec.size() * sizeof(float), cudaMemcpyHostToDevice));
                 }
-                preprocessorBindings[i] = mInput.deviceBuffer.data();
+                preprocessorBindings[i] = mInput->deviceBuffer.data();
                 // std::vector<float> vec1(args.batch * args.dim, 0);
                 // CHECK(cudaMemcpy(vec1.data(), preprocessorBindings[i], vec1.size() * sizeof(float), cudaMemcpyDeviceToHost));
                 // std::cout << "output:" << vec1 << std::endl;
