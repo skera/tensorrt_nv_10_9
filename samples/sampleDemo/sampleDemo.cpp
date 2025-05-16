@@ -31,7 +31,31 @@
 #include "NvInfer.h"
 #include <cuda_runtime_api.h>
 #include <random>
-#include "common/perf_guard.h"
+#include <iostream>
+#include <chrono>
+
+class PerfGuard {
+public:
+    // 构造函数，记录开始时间
+    PerfGuard(const std::string& name, size_t count = 0)
+        : name_(name), count_(count), start_(std::chrono::high_resolution_clock::now()) {}
+
+    // 析构函数，记录结束时间并计算和输出执行时间
+    ~PerfGuard() {
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start_).count();
+    std::cout << name_
+        << " ------ cnt[" << count_ << "]"
+        <<  " tm[" << duration <<  "us]"
+        << " avg[" << duration / count_ << "us]" << std::endl;
+    }
+
+private:
+    std::string name_;
+    size_t count_ = 0;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+};
+
 using namespace nvinfer1;
 using samplesCommon::SampleUniquePtr;
 
