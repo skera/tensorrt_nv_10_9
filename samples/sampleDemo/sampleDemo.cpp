@@ -270,8 +270,8 @@ int main(int argc, char** argv)
                 auto mOutput = mInputs[i];
                 CHECK(cudaMemcpy(mOutput->hostBuffer.data(), mOutput->deviceBuffer.data(), mOutput->deviceBuffer.nbBytes(),
                     cudaMemcpyDeviceToHost));
-                const float* bufRaw = static_cast<const float*>(mOutput.hostBuffer.data());
-                std::vector<float> prob(bufRaw, bufRaw + mOutput.hostBuffer.size());
+                const float* bufRaw = static_cast<const float*>(mOutput->hostBuffer.data());
+                std::vector<float> prob(bufRaw, bufRaw + mOutput->hostBuffer.size());
                 std::cout << "result:" << prob << std::endl;
             }
         }
