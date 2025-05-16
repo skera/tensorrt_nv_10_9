@@ -214,9 +214,9 @@ int main(int argc, char** argv)
 
         // Inference Before
         std::vector<void*> preprocessorBindings(inputSize + 1, nullptr);
+        std::shared_ptr<samplesCommon::ManagedBuffer> mInput;
+        std::vector<std::shared_ptr<samplesCommon::ManagedBuffer>> mInputs(inputSize);
         {
-            std::shared_ptr<samplesCommon::ManagedBuffer> mInput;
-            std::vector<std::shared_ptr<samplesCommon::ManagedBuffer>> mInputs(inputSize);
             std::vector<float> vec(batch_size * dim, 0.5);
             for (int i=0; i<inputSize; ++i) {
                 std::cout << "inputSize: " << inputSize << ", batch_size: " << batch_size << ", dim: " << dim << std::endl;
