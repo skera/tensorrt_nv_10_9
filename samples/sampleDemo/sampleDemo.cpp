@@ -266,11 +266,14 @@ int main(int argc, char** argv)
         if (!status) return 0;
         {
             PerfGuard guard("D2H", 1);
-            CHECK(cudaMemcpy(mOutput.hostBuffer.data(), mOutput.deviceBuffer.data(), mOutput.deviceBuffer.nbBytes(),
-            cudaMemcpyDeviceToHost));
-            const float* bufRaw = static_cast<const float*>(mOutput.hostBuffer.data());
-            std::vector<float> prob(bufRaw, bufRaw + mOutput.hostBuffer.size());
-            std::cout << "result:" << prob << std::endl;
+            for (int i=inputSize; i<outputSize + inputSize; ++i) {
+                auto mOutput = mInputs[i];
+                CHECK(cudaMemcpy(mOutput->hostBuffer.data(), mOutput->deviceBuffer.data(), mOutput->deviceBuffer.nbBytes(),
+                    cudaMemcpyDeviceToHost));
+                const float* bufRaw = static_cast<const float*>(mOutput.hostBuffer.data());
+                std::vector<float> prob(bufRaw, bufRaw + mOutput.hostBuffer.size());
+                std::cout << "result:" << prob << std::endl;
+            }
         }
 
     } catch (std::runtime_error& e) {
