@@ -213,9 +213,10 @@ int main(int argc, char** argv)
         }
 
         // Inference Before
-        std::vector<void*> preprocessorBindings(inputSize + 1, nullptr);
+        size_t outputSize = preprocessorNetwork->getNbOutputs();
+        std::vector<void*> preprocessorBindings(inputSize + outputSize, nullptr);
         std::shared_ptr<samplesCommon::ManagedBuffer> mInput;
-        std::vector<std::shared_ptr<samplesCommon::ManagedBuffer>> mInputs(inputSize);
+        std::vector<std::shared_ptr<samplesCommon::ManagedBuffer>> mInputs(inputSize + outputSize);
         {
             std::vector<float> vec(batch_size * dim, 0.5);
             for (int i=0; i<inputSize; ++i) {
@@ -235,11 +236,14 @@ int main(int argc, char** argv)
             }
         }
 
-        samplesCommon::ManagedBuffer mOutput{};
-        Dims outputDims = Dims2{batch_size, preprocessorNetwork->getNbOutputs()};
-        mOutput.deviceBuffer.resize(outputDims);
-        mOutput.hostBuffer.resize(outputDims);
-        preprocessorBindings[inputSize] = mOutput.deviceBuffer.data();
+        Dims outputDims = Dims2{batch_size, 1};
+        for (int i=0; i<outputSize; ++i) {
+            auto mOutput = std::make_shared<samplesCommon::ManagedBuffer>();
+            mOutput->deviceBuffer.resize(outputDims);
+            mOutput->hostBuffer.resize(outputDims);
+            preprocessorBindings[inputSize + i] = mOutput.deviceBuffer.data();
+            mInputs[inputSize + i] = mOutput; // managed buffer
+        }
 
         sample::gLogError << std::endl<< std::endl<< std::endl<< std::endl;
         // Inference
