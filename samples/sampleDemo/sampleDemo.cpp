@@ -241,7 +241,7 @@ int main(int argc, char** argv)
             auto mOutput = std::make_shared<samplesCommon::ManagedBuffer>();
             mOutput->deviceBuffer.resize(outputDims);
             mOutput->hostBuffer.resize(outputDims);
-            preprocessorBindings[inputSize + i] = mOutput.deviceBuffer.data();
+            preprocessorBindings[inputSize + i] = mOutput->deviceBuffer.data();
             mInputs[inputSize + i] = mOutput; // managed buffer
         }
 
