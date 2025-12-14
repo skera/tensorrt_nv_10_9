@@ -1,0 +1,7 @@
+onnx==1.20.0
+onnxruntime==1.23.2
+tensorrt==10.9.0.34
+tensorrt_cu12==10.9.0.34
+tensorrt_cu12_bindings==10.9.0.34
+tensorrt_cu12_libs==10.9.0.34
+pycuda==2025.1.2
